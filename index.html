@@ -1,26 +1,20 @@
 <!DOCTYPE html>
-<!-- Based on a tutorial from https://travishorn.com/updating-dynamic-data-in-d3-15ce4a9fa856-->
 <html>
 
 <head>
   <meta charset='utf-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>D3 Starter</title>
+  <title>Binary Tree</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.7/d3.min.js"></script>
 </head>
 
 <body>
-
   <svg width="600" height="600" id="mySVG"></svg>
-  <button id="addCircle" onClick="addCircle()">Add circle</button>
-  <button id="removeCircle" onClick="removeCircle()">Remove circle</button>
+  <button id="addCircle" onClick="addCircle()">Add word</button>
   <script>
 
-
     const golf = { name: "golf", left: null, right: null };
-
-
     const mike = { name: "mike", left: null, right: null };
     const sierra = { name: "sierra", left: null, right: null };
     const alpha = { name: "alpha", left: null, right: null };
@@ -28,16 +22,14 @@
     const beta = { name: "beta", left: null, right: null };
 
     const toAddArray = [golf, sierra, alpha, charley, beta];
-    
+
     let root = mike;
     let data = [];
     data.push(mike);
-    
+
     const width = 600;
     const bump = 100;
 
-
-    //const data = [1, 1, 1]; // We want to visualize this as 3 circles
     const circleRadius = 60;
     const circleDiameter = circleRadius * 2;
 
@@ -71,73 +63,54 @@
                 .append('line')
                 .attr('x1', "0")
                 .attr('y1', "0")
-                .attr('x2', d=>((d.endX-d.x)/2))
-                .attr('y2', d=>bump)
+                .attr('x2', d => ((d.endX - d.x) / 2))
+                .attr('y2', d => bump)
                 .attr('stroke', 'black')
               enter
                 .append('line')
                 .attr('x1', "0")
                 .attr('y1', "0")
-                .attr('x2', d=>((d.startX - d.x)/2))
-                .attr('y2', d=>bump)
+                .attr('x2', d => ((d.startX - d.x) / 2))
+                .attr('y2', d => bump)
                 .attr('stroke', 'black')
-
-              
-            }
-
-            ),
+            }),
           update => update,
           exit => exit
             .call(exit => exit.transition(t).style("opacity", "0").remove())
-        )
-        ;
-
-
-
-
-
+        );
     };
 
     const svg = d3.select('#mySVG');
     const base = svg.append('g');
     base.attr('transform', 'translate(0, 50)');
 
-
-
-
     function addCircle() {
       let toAdd = toAddArray.shift();
       data.push(toAdd);
-      if(root == null)
+      if (!root)
         root = toAdd;
       else
         add(root, toAdd);
       update();
     }
 
-    function add(parent, toAdd){
-      if(toAdd.name < parent.name){
-        if(parent.left == null)
-        {
+    function add(parent, toAdd) {
+      if (toAdd.name < parent.name) {
+        if (!parent.left)
           parent.left = toAdd;
-        }
-        else{
+        else
           add(parent.left, toAdd);
-        }
       }
-      else{
-        if(parent.right == null)
+      else {
+        if (!parent.right)
           parent.right = toAdd;
         else
           add(parent.right, toAdd);
       }
     }
-    // function removeCircle() {
-    //   data.pop();
-    //   plot(data, svg);
-    // }
+
     function calculatePositions(node, startX, endX, y) {
-      if (node == null) return;
+      if (!node) return;
       node.x = (endX - startX) / 2 + startX;
       node.y = y;
       node.startX = startX;
@@ -152,12 +125,6 @@
       plot(data, svg);
     }
     update();
-
-
-
-
   </script>
-
 </body>
-
 </html>
